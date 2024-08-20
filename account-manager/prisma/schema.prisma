@@ -1,0 +1,26 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id       Int       @id @default(autoincrement())
+    email    String    @unique
+    password String
+    accounts Account[]
+}
+
+model Account {
+    id       Int    @id @default(autoincrement())
+    type     String
+    balance  Float  @default(0)
+    userId   Int
+    currency String @default("IDR")
+    user     User   @relation(fields: [userId], references: [id])
+
+    @@unique([userId, type]) // Compound unique constraint
+}

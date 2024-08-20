@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "cad70ba3-5cf0-48cb-a75f-c3c823b39572",
+		"name": "Concrete AI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "9624198"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"jibranfawaid@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url-account}}/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"if (responseJson.data && responseJson.data.token) {\r",
+							"    pm.environment.set(\"jwt_token\", responseJson.data.token);\r",
+							"    console.log(\"Token has been set to the environment variable 'authToken'\");\r",
+							"} else {\r",
+							"    console.log(\"Token not found in the response\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"jibranfawaid@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url-account}}/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Get List Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{jwt_token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url-account}}/accounts?page=1&limit=10",
+					"host": [
+						"{{url-account}}"
+					],
+					"path": [
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payment History",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{jwt_token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url-account}}/payment-history?page=1&limit=10",
+					"host": [
+						"{{url-account}}"
+					],
+					"path": [
+						"payment-history"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{jwt_token}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 10,\r\n    \"accountType\": \"credit\",\r\n    \"toAddress\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url-payment}}/send"
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{jwt_token}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 5,\r\n    \"accountType\": \"credit\",\r\n    \"toAddress\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{url-payment}}/withdraw"
+			},
+			"response": []
+		}
+	]
+}
